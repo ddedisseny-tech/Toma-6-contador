@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Toma 6 · Contador</title>
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#c62828">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Toma 6">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e9f4fd;--card:rgba(255,255,255,.94);--ink:#000;--line:#a9cbe8;--acc:#c62828;--onacc:#fff;--warn:#b91c1c;--gold:#f5b81c;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{min-height:100%;background:#d4ebff;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100vh;background:linear-gradient(165deg,#bfe0fa 0%,#d6ecfd 50%,#ecf7ff 100%) no-repeat;background-size:cover;color:#000;font:400 16px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+h1,h2{font-family:"Lilita One","Arial Rounded MT Bold","Trebuchet MS",system-ui,sans-serif;font-weight:400}
+main{max-width:1000px;margin:0 auto;padding:16px}
+button{font:inherit;color:#000;cursor:pointer;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:10px 12px;min-height:44px}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+button.pri{background:var(--acc);color:var(--onacc);border-color:var(--acc);font-weight:700}
+button.sec{background:transparent}
+h1{font-size:clamp(38px,10vw,54px);letter-spacing:1px;line-height:1.05;margin:0;text-align:center;text-shadow:3px 3px 0 rgba(255,255,255,.75)}
+h1 .ic{font-size:1.1em}
+header{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;margin-bottom:12px}
+.sub{display:inline-block;margin-top:6px;font-size:21px;font-weight:800;background:var(--acc);color:#fff;border-radius:99px;padding:5px 16px;box-shadow:0 2px 6px rgba(30,90,150,.22)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.ic{font-size:1.5em;line-height:1;vertical-align:-.14em;margin-right:.18em}
+.paper{background-color:#ececea;background-image:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='240'%20height='240'%3E%3Cfilter%20id='g'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.75'%20numOctaves='3'%20seed='4'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20values='0%200%200%200%200.35%20%200%200%200%200%200.35%20%200%200%200%200%200.35%20%200%200%200%200.55%20-0.2'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23g)'/%3E%3C/svg%3E"),linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,0) 40%);border:2px solid var(--acc);border-radius:16px;padding:14px;margin-bottom:14px;box-shadow:0 4px 14px rgba(30,90,150,.18)}
+.st{display:block;font-size:16px;font-weight:800;margin-bottom:6px}
+.leg{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.leg span{background:#e4f1fc;border-radius:99px;padding:3px 10px;font-size:14px;font-weight:700}
+.warn{color:var(--warn);font-weight:800;font-size:16px;margin:0 0 10px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.p{box-shadow:0 3px 10px rgba(30,90,150,.15);background:var(--card);border:1px solid var(--line);border-top:8px solid var(--pc);border-radius:14px;padding:12px}
+.p.low{box-shadow:0 0 0 3px var(--gold)}
+.p.hot{box-shadow:0 0 0 3px var(--warn)}
+.name{font-weight:700;font-size:18px;background:transparent;border:0;border-bottom:1px dashed var(--line);color:#000;width:100%;padding:2px 0;font-family:inherit}
+.dl{display:block;margin-top:8px;font-size:17px;font-weight:700}
+.num{font-family:"Share Tech Mono","DejaVu Sans Mono",Menlo,Consolas,"Courier New",monospace;font-weight:400;letter-spacing:-1px;-webkit-text-stroke:1.4px currentColor;font-size:56px;line-height:1.05;margin:2px 0}
+.num small{font-size:22px;-webkit-text-stroke:0;letter-spacing:0;font-weight:700}
+.num.over{color:var(--warn)}
+.bar{height:12px;background:#d3e4f3;border-radius:99px;overflow:hidden;margin:6px 0 0}
+.bar i{display:block;height:100%;border-radius:99px}
+.r2{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.r2 .l{flex:1 1 170px;min-width:170px}
+.r2 .dl{font-size:15px;margin-top:4px}
+.r2 .dl .ic{font-size:1.3em}
+.man{display:flex;flex-direction:column;gap:6px;flex:0 0 120px;margin-bottom:6px}
+.man button{width:100%;min-height:40px}
+.man input{width:100%;min-width:0;font-size:19px;font-weight:700;padding:8px 10px}
+.man button{font-weight:700;white-space:nowrap}
+.chips{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.chips button{padding:8px 0;font-weight:800;font-size:18px}
+section{margin-top:20px}
+h2{font-size:22px;margin:0 0 8px}
+.rank{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 14px}
+.rank div{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)}
+.rank div:last-child{border:0}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:8px}
+.setup{max-width:480px;margin:0 auto}
+.setup label{display:block;margin:12px 0 4px;font-weight:700}
+.r5{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.r5 button.on{background:var(--acc);color:var(--onacc);border-color:var(--acc)}
+input[type=text],input[type=number]{font:inherit;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:#000;width:100%}
+.hint.tagline{font-size:25px;font-weight:800;color:#b91c1c;margin:8px 0 4px;text-align:center;line-height:1.2}
+.hint{font-size:14px}
+.legal{max-width:1000px;margin:8px auto 0;padding:14px 16px 28px;border-top:1px solid var(--line);font-size:12px;line-height:1.45;text-align:center}
+.legal p{margin:0 0 4px}
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center;z-index:9}
+#modal.show{display:flex}
+#box{background:#fff;width:100%;max-width:520px;border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));max-height:85%;overflow:auto}
+#opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:10px}
+.fin{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:30;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
+.fcard{background:linear-gradient(165deg,#fff7e0,#ffe9a8);border:4px solid var(--gold);border-radius:24px;max-width:430px;width:100%;padding:20px 18px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.4);animation:pop .45s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.tro{font-size:56px;line-height:1}.tro .ic{font-size:1em;margin:0}
+.ft{font-size:36px;margin:6px 0 2px;letter-spacing:1px}
+.fw{font-size:24px;margin:4px 0 0}.fw b{color:#b91c1c}
+.fcard .rank{text-align:left;margin:14px 0 10px}
+.fcard .row{display:flex;gap:6px;flex-wrap:wrap}.fcard .row button{flex:1 1 auto}
+@media(prefers-reduced-motion:reduce){.fcard{animation:none}}
+</style></head>
+<body><main id="app"></main>
+<div id="modal"><div id="box" role="dialog" aria-modal="true"><h2 id="mt"></h2><div id="opts"></div><button id="mc" class="sec" style="width:100%">Cancelar</button></div></div>
+<footer class="legal"><p><b>Toma 6</b> es un juego de sus respectivos autores y editores. Este contador gratuito ha sido diseñado y creado por <b>Ddedisseny Tech</b> como complemento para facilitar la contabilidad de la partida.</p><p>El nombre del juego y sus reglas pertenecen a sus titulares.</p></footer>
+<script>
+const KEY="toma6-v1",LIM=66,CH=[1,2,3,5,7];
+const COL=["#e5484d","#3e8ef7","#2fa66a","#f0a020","#9b59d0","#e8589a","#14b8c4","#8a6a4a","#84cc16","#334155"];
+let S=null,H=[];
+try{const r=localStorage.getItem(KEY);if(r)S=JSON.parse(r)}catch(e){}
+const $=s=>document.querySelector(s);
+const esc=t=>t.replace(/"/g,"&quot;").replace(/</g,"&lt;");
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function mut(fn){H.push(JSON.stringify(S));if(H.length>80)H.shift();fn();save();render()}
+function undo(){if(!H.length)return;S=JSON.parse(H.pop());save();render()}
+function big(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),ns=[];while(w.nextNode())ns.push(w.currentNode);
+  const E=/(\p{Extended_Pictographic}\uFE0F?)/u;
+  ns.forEach(n=>{const t=n.nodeValue;if(!E.test(t))return;const f=document.createDocumentFragment();
+    t.split(E).forEach(p=>{if(p&&/^\p{Extended_Pictographic}/u.test(p)){const s=document.createElement("span");s.className="ic";s.textContent=p;f.appendChild(s)}else if(p)f.appendChild(document.createTextNode(p))});
+    n.parentNode.replaceChild(f,n)})}
+function pick(title,opts){return new Promise(res=>{
+  $("#mt").textContent=title;const o=$("#opts");o.innerHTML="";
+  opts.forEach(x=>{const b=document.createElement("button");b.textContent=x.l;b.onclick=()=>{$("#modal").classList.remove("show");res(x.v)};o.appendChild(b)});
+  big(o);$("#mc").onclick=()=>{$("#modal").classList.remove("show");res(null)};$("#modal").classList.add("show");o.firstChild&&o.firstChild.focus()})}
+function setup(){
+  const n=+(window._n||4);
+  $("#app").innerHTML=`<div class="setup"><h1>🐮 Toma 6</h1><p class="hint tagline">¿Cuántas reses te llevas, vaquero?</p>
+  <label>Jugadores</label><div class="r5">${[2,3,4,5,6,7,8,9,10].map(k=>`<button data-k="${k}" class="${k==n?"on":""}">${k}</button>`).join("")}</div>
+  <p class="hint">La partida termina al acabar la mano en la que alguien llegue a <b>${LIM}</b> cabezas de buey. Gana quien menos tenga.</p>
+  ${Array.from({length:n},(_,i)=>`<label>Nombre ${i+1}</label><input type="text" data-n placeholder="Jugador ${i+1}">`).join("")}
+  <p><button class="pri" id="go" style="width:100%">✅ Empezar partida</button></p></div>`;
+  big($("#app"));
+  document.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{window._n=+b.dataset.k;setup()});
+  $("#go").onclick=()=>{const names=[...document.querySelectorAll("[data-n]")].map((e,i)=>e.value.trim()||"Jugador "+(i+1));
+    S={hand:1,players:names.map(x=>({name:x,pts:0})),over:false,shown:false};H=[];save();render()}}
+function addMan(i){const e=document.querySelector(`[data-m="${i}"]`),v=parseInt(e.value,10);if(S.over||isNaN(v)||v===0)return;mut(()=>{S.players[i].pts=Math.max(0,S.players[i].pts+v)})}
+function add(i,v){if(S.over)return;mut(()=>{S.players[i].pts+=v})}
+async function finMano(){
+  const hot=S.players.some(p=>p.pts>=LIM);
+  const ok=await pick(hot?"¿Terminar la mano? Alguien ha llegado a "+LIM+", así que acaba la partida.":"¿Terminar la mano nº "+S.hand+"?",[{l:"🏁 Sí, terminar mano",v:1}]);if(!ok)return;
+  mut(()=>{if(S.players.some(p=>p.pts>=LIM))S.over=true;else S.hand++})}
+async function reset(){const r=await pick("¿Empezar una partida nueva? Se borra la actual.",[{l:"Sí, nueva partida",v:1}]);if(r){S=null;H=[];try{localStorage.removeItem(KEY)}catch(e){}render()}}
+function confetti(){
+  if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;
+  const c=document.createElement("canvas");c.style.cssText="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:40";
+  document.body.appendChild(c);const dpr=window.devicePixelRatio||1,W=innerWidth,Hh=innerHeight;
+  c.width=W*dpr;c.height=Hh*dpr;const x=c.getContext("2d");x.scale(dpr,dpr);
+  const cols=[...COL,"#f5b81c","#ffffff"],P=[];
+  const burst=(bx,by,n)=>{for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,v=5+Math.random()*11;
+    P.push({x:bx,y:by,vx:Math.cos(a)*v,vy:Math.sin(a)*v-7,w:6+Math.random()*8,h:4+Math.random()*6,r:Math.random()*6,vr:(Math.random()-.5)*.5,c:cols[i%cols.length]})}};
+  const rain=n=>{for(let i=0;i<n;i++)P.push({x:Math.random()*W,y:-10-Math.random()*60,vx:(Math.random()-.5)*3,vy:2+Math.random()*3,w:6+Math.random()*7,h:4+Math.random()*6,r:Math.random()*6,vr:(Math.random()-.5)*.4,c:cols[i%cols.length]})};
+  burst(W/2,Hh*.35,90);
+  setTimeout(()=>{burst(W*.15,Hh*.5,60);burst(W*.85,Hh*.5,60)},300);
+  setTimeout(()=>burst(W/2,Hh*.3,80),800);
+  setTimeout(()=>rain(70),1200);
+  const t0=performance.now();
+  (function f(){x.clearRect(0,0,W,Hh);
+    for(let i=P.length-1;i>=0;i--){const p=P[i];p.vy+=.28;p.vx*=.992;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;
+      if(p.y>Hh+30){P.splice(i,1);continue}
+      x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.w/2,-p.h/2,p.w,p.h);x.restore()}
+    if(P.length||performance.now()-t0<2500)requestAnimationFrame(f);else c.remove()})()}
+function showFin(){
+  if(!S||document.querySelector(".fin"))return;
+  const rank=S.players.map((p,i)=>({...p,i})).sort((a,b)=>a.pts-b.pts),mn=rank[0].pts;
+  const win=rank.filter(p=>p.pts==mn).map(p=>esc(p.name)).join(" y ");
+  const d=document.createElement("div");d.className="fin";
+  d.innerHTML=`<div class="fcard" role="dialog" aria-modal="true"><div class="tro">🏆</div><h2 class="ft">¡Fin de partida!</h2>
+  <p class="fw">Gana <b>${win}</b></p><p>con solo ${mn} ${mn==1?"cabeza":"cabezas"} de buey</p>${rank.filter(p=>p.pts==mn).length>1?"<p>¡Empate en cabeza!</p>":""}
+  <div class="rank">${rank.map((p,k)=>`<div><span><i class="dot" style="background:${COL[p.i%10]}"></i>${["🥇","🥈","🥉"][k]||(k+1)+"."} ${esc(p.name)}</span><b>${p.pts}</b></div>`).join("")}</div>
+  <div class="row"><button id="fv">👀 Ver partida</button><button class="pri" id="fn">🆕 Nueva partida</button></div></div>`;
+  document.body.appendChild(d);big(d);
+  d.querySelector("#fv").onclick=()=>d.remove();
+  d.querySelector("#fn").onclick=()=>{d.remove();S=null;H=[];try{localStorage.removeItem(KEY)}catch(e){}render()};
+  confetti()}
+function render(){
+  if(!S)return setup();
+  const mn=Math.min(...S.players.map(p=>p.pts)),mxp=Math.max(...S.players.map(p=>p.pts)),hotN=S.players.filter(p=>p.pts>=LIM).map(p=>esc(p.name)).join(" y ");
+  const rank=S.players.map((p,i)=>({...p,i})).sort((a,b)=>a.pts-b.pts);
+  $("#app").innerHTML=`<header><h1>🐮 Toma 6</h1><div class="sub">Mano nº ${S.hand}</div>
+  <div class="tools"><button class="sec" id="u" ${H.length?"":"disabled"}>↩️ Deshacer</button><button class="sec" id="rs">🆕 Nueva partida</button></div></header>
+  ${S.over?`<div class="paper"><b style="font-size:20px">🏁 Fin de partida</b><p style="margin:6px 0">Se ha llegado a ${LIM} cabezas.</p><button class="pri" id="vr" style="width:100%">🏆 Ver resultados</button></div>`:
+  `<div class="paper"><small class="st">🐮 Cabezas de buey por carta</small>
+  <div class="leg"><span>Normal: 1</span><span>Múltiplo de 5: 2</span><span>Múltiplo de 10: 3</span><span>Múltiplo de 11: 5</span><span>El 55: 7</span></div>
+  ${hotN?`<p class="warn">⚠️ ${hotN} ha llegado a ${LIM}. La partida acabará al terminar esta mano.</p>`:""}
+  <button class="pri" id="fm" style="width:100%">🏁 Terminar mano</button></div>`}
+  <div class="grid">${S.players.map((p,i)=>`<div class="p ${p.pts>=LIM?"hot":p.pts==mn&&mxp>mn?"low":""}" style="--pc:${COL[i%10]}">
+    <input class="name" data-i="${i}" value="${esc(p.name)}" aria-label="Nombre"><div class="r2"><div class="l"><small class="dl">🐮 Cabezas de buey</small>
+    <div class="num ${p.pts>=LIM?"over":""}">${p.pts}<small> / ${LIM}</small></div></div>
+    <div class="man"><input type="number" inputmode="numeric" placeholder="Total mano" aria-label="Total de la mano de ${esc(p.name)}" data-m="${i}" ${S.over?"disabled":""}><button data-ma="${i}" ${S.over?"disabled":""}>➕ Añadir</button></div></div>
+    <div class="bar"><i style="width:${Math.min(100,p.pts/LIM*100)}%;background:${p.pts>=LIM?"#b91c1c":COL[i%10]}"></i></div></div>`).join("")}</div>
+  <section><h2>🏆 Clasificación</h2><div class="rank">${rank.map((p,k)=>`<div><span><i class="dot" style="background:${COL[p.i%10]}"></i>${["🥇","🥈","🥉"][k]||(k+1)+"."} ${esc(p.name)}</span><b>${p.pts}</b></div>`).join("")}</div></section>`;
+  big($("#app"));
+  $("#u").onclick=undo;$("#rs").onclick=reset;if($("#fm"))$("#fm").onclick=finMano;if($("#vr"))$("#vr").onclick=showFin;
+  document.querySelectorAll("[data-ma]").forEach(b=>b.onclick=()=>addMan(+b.dataset.ma));
+  document.querySelectorAll("[data-m]").forEach(e=>e.onkeydown=ev=>{if(ev.key==="Enter")addMan(+e.dataset.m)});
+  document.querySelectorAll("input.name").forEach(e=>e.onchange=()=>{S.players[+e.dataset.i].name=e.value.trim()||"Jugador";save();render()});
+  if(S.over&&!S.shown){S.shown=true;save();setTimeout(showFin,200)}}
+render();
+</script></body></html>
